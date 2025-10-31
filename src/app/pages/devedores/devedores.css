@@ -235,6 +235,152 @@
   text-align: center;
 }
 
+.devedores-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(3, 13, 23, 0.65);
+  backdrop-filter: blur(6px);
+  z-index: 20;
+  padding: 1.5rem;
+}
+
+.devedores-modal {
+  position: relative;
+  width: min(540px, 100%);
+  border-radius: 28px;
+  padding: 2.5rem 2.75rem 3rem;
+  background: linear-gradient(180deg, rgba(4, 22, 39, 0.96) 0%, rgba(5, 27, 45, 0.98) 100%);
+  border: 1px solid rgba(28, 184, 255, 0.2);
+  box-shadow: 0 30px 60px rgba(2, 12, 24, 0.55);
+  overflow: hidden;
+}
+
+.devedores-modal::after {
+  content: '';
+  position: absolute;
+  bottom: -35px;
+  left: -40px;
+  width: 160%;
+  height: 160px;
+  background: radial-gradient(circle at 10% 20%, rgba(28, 184, 255, 0.28), transparent 55%),
+    radial-gradient(circle at 85% 20%, rgba(31, 127, 255, 0.22), transparent 50%),
+    radial-gradient(circle at 50% 120%, rgba(7, 44, 77, 0.9), transparent 65%);
+  opacity: 0.85;
+  pointer-events: none;
+  transform: rotate(-4deg);
+}
+
+.devedores-modal-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.75rem;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.05);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out, transform 0.2s ease-in-out;
+  z-index: 1;
+}
+
+.devedores-modal-close span {
+  position: absolute;
+  width: 20px;
+  height: 2px;
+  background: #f1f5f9;
+  border-radius: 999px;
+}
+
+.devedores-modal-close span:first-child {
+  transform: rotate(45deg);
+}
+
+.devedores-modal-close span:last-child {
+  transform: rotate(-45deg);
+}
+
+.devedores-modal-close:hover {
+  background: rgba(28, 184, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+.devedores-modal-title {
+  margin: 0 0 1.75rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+  position: relative;
+  z-index: 1;
+}
+
+.devedores-modal-form {
+  display: grid;
+  gap: 1.25rem;
+  position: relative;
+  z-index: 1;
+}
+
+.devedores-modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-weight: 500;
+}
+
+.devedores-modal-field span {
+  font-size: 0.95rem;
+  color: rgba(236, 244, 252, 0.85);
+}
+
+.devedores-modal-field input,
+.devedores-modal-field select {
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(8, 31, 44, 0.75);
+  padding: 0.85rem 1rem;
+  color: #f1f5f9;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.devedores-modal-field input:focus,
+.devedores-modal-field select:focus {
+  border-color: rgba(28, 184, 255, 0.55);
+  box-shadow: 0 0 0 3px rgba(28, 184, 255, 0.16);
+}
+
+.devedores-modal-submit {
+  margin-top: 0.75rem;
+  padding: 1rem 1.75rem;
+  border-radius: 18px;
+  border: none;
+  font-weight: 600;
+  font-size: 1rem;
+  background: linear-gradient(90deg, #1cb8ff 0%, #1f7fff 100%);
+  color: #061727;
+  cursor: pointer;
+  box-shadow: 0 18px 36px rgba(28, 184, 255, 0.35);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.devedores-modal-submit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 22px 40px rgba(28, 184, 255, 0.45);
+}
+
+.devedores-modal-field--invalid input,
+.devedores-modal-field--invalid select {
+  border-color: rgba(248, 113, 113, 0.7);
+  box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.18);
+}
+
 @media (max-width: 1200px) {
   .devedores-content {
     padding: 2rem;

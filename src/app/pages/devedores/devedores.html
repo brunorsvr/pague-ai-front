@@ -7,7 +7,7 @@
         <p class="devedores-breadcrumb">Início / Gestão / Devedores</p>
         <h1 class="devedores-title">Lista de Devedores</h1>
       </div>
-      <button type="button" class="devedores-add-button">
+      <button type="button" class="devedores-add-button" (click)="openModal()">
         <img src="assets/images/add.svg" alt="Adicionar" />
         Adicionar Devedor
       </button>
@@ -74,4 +74,74 @@
       </table>
     </div>
   </main>
+
+  <div class="devedores-modal-backdrop" *ngIf="isModalOpen">
+    <div class="devedores-modal">
+      <button type="button" class="devedores-modal-close" (click)="closeModal()" aria-label="Fechar">
+        <span></span>
+        <span></span>
+      </button>
+
+      <h2 class="devedores-modal-title">Adicionar Devedor</h2>
+
+      <form class="devedores-modal-form" [formGroup]="debtorForm" (ngSubmit)="addDebtor()">
+        <label
+          class="devedores-modal-field"
+          [class.devedores-modal-field--invalid]="debtorForm.get('name')?.invalid && debtorForm.get('name')?.touched"
+        >
+          <span>Nome completo</span>
+          <input type="text" formControlName="name" placeholder="Digite o nome completo" />
+        </label>
+
+        <label
+          class="devedores-modal-field"
+          [class.devedores-modal-field--invalid]="debtorForm.get('cpf')?.invalid && debtorForm.get('cpf')?.touched"
+        >
+          <span>CPF</span>
+          <input type="text" formControlName="cpf" placeholder="000.000.000-00" />
+        </label>
+
+        <label
+          class="devedores-modal-field"
+          [class.devedores-modal-field--invalid]="debtorForm.get('store')?.invalid && debtorForm.get('store')?.touched"
+        >
+          <span>Loja</span>
+          <input type="text" formControlName="store" placeholder="Identificador da loja" />
+        </label>
+
+        <label
+          class="devedores-modal-field"
+          [class.devedores-modal-field--invalid]="debtorForm.get('dueDate')?.invalid && debtorForm.get('dueDate')?.touched"
+        >
+          <span>Data de vencimento</span>
+          <input type="date" formControlName="dueDate" />
+        </label>
+
+        <label
+          class="devedores-modal-field"
+          [class.devedores-modal-field--invalid]="debtorForm.get('debtValue')?.invalid && debtorForm.get('debtValue')?.touched"
+        >
+          <span>Valor da dívida</span>
+          <input type="text" formControlName="debtValue" placeholder="1.234,56" />
+        </label>
+
+        <label
+          class="devedores-modal-field"
+          [class.devedores-modal-field--invalid]="debtorForm.get('status')?.invalid && debtorForm.get('status')?.touched"
+        >
+          <span>Status</span>
+          <select formControlName="status">
+            <option value="Não Pago">Não Pago</option>
+            <option value="Parcial">Parcial</option>
+            <option value="Pago">Pago</option>
+            <option value="Atrasado">Atrasado</option>
+          </select>
+        </label>
+
+        <button type="submit" class="devedores-modal-submit">
+          Adicionar
+        </button>
+      </form>
+    </div>
+  </div>
 </div>
