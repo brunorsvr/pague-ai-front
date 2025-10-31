@@ -1,0 +1,77 @@
+<div class="devedores-page">
+  <app-navbar></app-navbar>
+
+  <main class="devedores-content">
+    <section class="devedores-header">
+      <div>
+        <p class="devedores-breadcrumb">Início / Gestão / Devedores</p>
+        <h1 class="devedores-title">Lista de Devedores</h1>
+      </div>
+      <button type="button" class="devedores-add-button">
+        <img src="assets/images/add.svg" alt="Adicionar" />
+        Adicionar Devedor
+      </button>
+    </section>
+
+    <section class="devedores-toolbar">
+      <div class="devedores-entries">
+        <label>
+          Mostrar
+          <select>
+            <option>10</option>
+            <option>25</option>
+            <option>50</option>
+          </select>
+          entradas
+        </label>
+      </div>
+      <div class="devedores-search">
+        <img src="assets/images/search.svg" alt="Buscar" />
+        <input type="text" placeholder="Pesquisar..." />
+      </div>
+    </section>
+
+    <div class="devedores-table-wrapper">
+      <table class="devedores-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Loja</th>
+            <th>Data</th>
+            <th>Valor da dívida</th>
+            <th>CPF</th>
+            <th>Status</th>
+            <th class="devedores-actions-column">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let debtor of debtors; index as index">
+            <td>{{ debtor.id }}</td>
+            <td>
+              <div class="devedores-name">
+                <span class="devedores-avatar">{{ index + 1 }}</span>
+                <span>{{ debtor.name }}</span>
+              </div>
+            </td>
+            <td>{{ debtor.store }}</td>
+            <td>{{ debtor.dueDate }}</td>
+            <td>{{ debtor.debtValue }}</td>
+            <td>{{ debtor.cpf }}</td>
+            <td>
+              <span [ngClass]="statusClass(debtor.status)">{{ debtor.status }}</span>
+            </td>
+            <td class="devedores-actions">
+              <button type="button" aria-label="Editar">
+                <img src="assets/images/edit.svg" alt="Editar" />
+              </button>
+              <button type="button" aria-label="Excluir">
+                <img src="assets/images/delete.svg" alt="Excluir" />
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>

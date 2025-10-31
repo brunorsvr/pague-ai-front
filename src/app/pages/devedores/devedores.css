@@ -1,0 +1,252 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, rgba(28, 184, 255, 0.12), transparent 45%),
+    radial-gradient(circle at bottom right, rgba(241, 83, 110, 0.1), transparent 40%),
+    #062034;
+  color: #f1f5f9;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.devedores-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.devedores-content {
+  flex: 1;
+  padding: 2.5rem 3rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.devedores-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.devedores-breadcrumb {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  color: rgba(235, 243, 255, 0.7);
+}
+
+.devedores-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.devedores-add-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: linear-gradient(90deg, #1cb8ff 0%, #1f7fff 100%);
+  border: none;
+  border-radius: 16px;
+  color: #061727;
+  font-weight: 600;
+  padding: 0.85rem 1.8rem;
+  cursor: pointer;
+  box-shadow: 0 12px 30px rgba(28, 184, 255, 0.35);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.devedores-add-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 34px rgba(28, 184, 255, 0.45);
+}
+
+.devedores-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: rgba(8, 31, 44, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 18px;
+  padding: 1.2rem 1.5rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.devedores-entries label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+
+.devedores-entries select {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 0.45rem 0.75rem;
+  color: inherit;
+  font-weight: 600;
+  appearance: none;
+}
+
+.devedores-search {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 0.65rem 1rem;
+  min-width: 260px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.devedores-search input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: inherit;
+  flex: 1;
+}
+
+.devedores-search input::placeholder {
+  color: rgba(241, 245, 249, 0.55);
+}
+
+.devedores-table-wrapper {
+  background: rgba(8, 31, 44, 0.9);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(5, 13, 22, 0.6);
+}
+
+.devedores-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 960px;
+}
+
+.devedores-table thead {
+  background: rgba(10, 41, 58, 0.95);
+}
+
+.devedores-table th,
+.devedores-table td {
+  padding: 1.1rem 1.25rem;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.devedores-table th {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: rgba(236, 244, 252, 0.8);
+}
+
+.devedores-table tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.2s ease-in-out;
+}
+
+.devedores-table tbody tr:hover {
+  background: rgba(28, 184, 255, 0.08);
+}
+
+.devedores-name {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+}
+
+.devedores-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(28, 184, 255, 0.25) 0%, rgba(28, 184, 255, 0.08) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1cb8ff;
+  font-weight: 700;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
+
+.status-badge--paid {
+  background: rgba(53, 208, 163, 0.18);
+  color: #34d399;
+  border: 1px solid rgba(53, 208, 163, 0.45);
+}
+
+.status-badge--partial {
+  background: rgba(251, 191, 36, 0.18);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.45);
+}
+
+.status-badge--unpaid {
+  background: rgba(248, 113, 113, 0.18);
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.45);
+}
+
+.status-badge--late {
+  background: rgba(99, 102, 241, 0.2);
+  color: #818cf8;
+  border: 1px solid rgba(99, 102, 241, 0.45);
+}
+
+.devedores-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.devedores-actions button {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  border-radius: 12px;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.devedores-actions button:hover {
+  background: rgba(28, 184, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.devedores-actions-column {
+  text-align: center;
+}
+
+@media (max-width: 1200px) {
+  .devedores-content {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .devedores-content {
+    padding: 1.5rem;
+  }
+
+  .devedores-table-wrapper {
+    overflow-x: auto;
+  }
+}

@@ -1,0 +1,34 @@
+<nav class="navbar">
+  <div class="navbar__brand">
+    <img src="assets/images/logo.svg" alt="Logo Pague.AI" class="navbar__logo" />
+    <span class="navbar__brand-name">PAGUE.AI</span>
+  </div>
+
+  <ul class="navbar__links">
+    <li *ngFor="let item of navigationItems" class="navbar__item">
+      <a
+        [routerLink]="item.link"
+        routerLinkActive="navbar__link--active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="navbar__link"
+      >
+        {{ item.label }}
+      </a>
+    </li>
+  </ul>
+
+  <div class="navbar__actions">
+    <button type="button" class="navbar__icon-button" aria-label="Notificações">
+      <img src="assets/images/bell.svg" alt="Notificações" />
+    </button>
+    <button type="button" class="navbar__icon-button" aria-label="Configurações">
+      <img src="assets/images/settings.svg" alt="Configurações" />
+    </button>
+    <button type="button" class="navbar__icon-button" aria-label="Ajuda">
+      <img src="assets/images/help.svg" alt="Ajuda" />
+    </button>
+    <div class="navbar__profile" aria-label="Perfil do usuário">
+      <img src="assets/images/profile.png" alt="Perfil do usuário" />
+    </div>
+  </div>
+</nav>
