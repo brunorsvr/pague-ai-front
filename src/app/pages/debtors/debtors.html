@@ -1,0 +1,102 @@
+<app-navbar/>
+<div class="min-h-screen bg-slate-900 text-slate-100">
+  <main class="mx-auto max-w-7xl px-4 py-6">
+    <div class="flex flex-col gap-4">
+
+      <div class="flex items-center justify-between gap-3">
+        <div></div>
+        <div class="flex items-center gap-3">
+          <input
+            class="w-80 rounded-md bg-slate-800/70 border border-slate-700 px-3 py-2 text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
+            placeholder="Procurar..."
+            [ngModel]="search()"
+            (ngModelChange)="search.set($event); go(1)" />
+          <button type="button"
+            class="inline-flex items-center gap-3 bg-gradient-to-r from-[#1cb8ff] to-[#1f7fff] rounded-[16px] text-[#061727] font-semibold py-[0.4rem] px-[0.8rem] cursor-pointer shadow-[0_12px_30px_rgba(28,184,255,0.35)] transition-transform transition-shadow duration-200 ease-in-out">
+            <img class="max-h-8" src="assets/add.svg" alt="Adicionar" />
+            Adicionar Devedor
+          </button>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto rounded-lg border border-slate-800">
+        <table class="min-w-full divide-y divide-slate-800">
+          <thead class="bg-slate-800/50">
+            <tr>
+              <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">ID</th>
+              <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">Nome</th>
+              <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">Loja</th>
+
+              <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">
+                <button class="inline-flex items-center gap-1 hover:text-white"
+                        (click)="setSort('data')">
+                  Data
+                  <span class="text-[10px]" *ngIf="sortBy()==='data'">{{ sortDir()==='asc' ? '▲' : '▼' }}</span>
+                </button>
+              </th>
+
+              <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">
+                <button class="inline-flex items-center gap-1 hover:text-white"
+                        (click)="setSort('valor')">
+                  Valor da dívida
+                  <span class="text-[10px]" *ngIf="sortBy()==='valor'">{{ sortDir()==='asc' ? '▲' : '▼' }}</span>
+                </button>
+              </th>
+
+              <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">CPF</th>
+              <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">Status</th>
+              <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">Ações</th>
+            </tr>
+          </thead>
+
+          <tbody class="divide-y divide-slate-800 bg-slate-900/40">
+            @for (r of paged(); track trackByRow) {
+              <tr class="hover:bg-slate-800/40">
+                <td class="px-4 py-3 text-sm">{{ r.id }}</td>
+                <td class="px-4 py-3 text-sm">{{ r.nome }}</td>
+                <td class="px-4 py-3 text-sm">{{ r.loja }}</td>
+                <td class="px-4 py-3 text-sm">{{ r.data | date:'dd/MM/yyyy' }}</td>
+                <td class="px-4 py-3 text-sm">{{ r.valor | currency:'BRL' }}</td>
+                <td class="px-4 py-3 text-sm">{{ r.cpf }}</td>
+                <td class="px-4 py-3">
+                  <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold" [ngClass]="badgeClass(r.status)">{{ r.status }}</span>
+                </td>
+                <td class="px-4 py-3">
+                  <div class="flex items-center gap-3">
+                    <button class="p-2 rounded bg-rose-600 hover:bg-rose-500">
+                      <img class="max-h-5" src="assets/delete.svg" alt="Excluir">
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr><td class="px-4 py-6 text-center text-slate-400" colspan="8">Nenhum registro encontrado</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <div class="text-sm text-slate-400">
+          Página {{ page() }} de {{ totalPages() }} • {{ filtered().length }} registro(s)
+        </div>
+        <div class="flex items-center gap-2">
+          <button class="px-3 py-2 rounded bg-slate-800 hover:bg-slate-700 disabled:opacity-50"
+                  (click)="go(page()-1)" [disabled]="page()===1">Anterior</button>
+
+          <div class="flex items-center">
+            @for (p of pageList(); track p) {
+              <button class="w-9 h-9 rounded mx-0.5"
+                      [ngClass]="page()===p ? 'bg-sky-500 text-white' : 'bg-slate-800 hover:bg-slate-700'"
+                      (click)="go(p)">{{ p }}</button>
+            }
+          </div>
+
+          <button class="px-3 py-2 rounded bg-slate-800 hover:bg-slate-700 disabled:opacity-50"
+                  (click)="go(page()+1)" [disabled]="page()===totalPages()">Próxima</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
