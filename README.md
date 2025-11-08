@@ -11,7 +11,7 @@ NG_APP_API_BASE_URL=http://localhost:8000
 NG_APP_DEBTS_ENDPOINT=/debts
 ```
 
-You can point `NG_APP_API_BASE_URL` to any backend host (production, staging, etc.) without changing the source code. The Angular build system will inject any `NG_APP_*` variable into `import.meta.env`, which the application uses to configure the AuthService and Dívidas page.
+You can point `NG_APP_API_BASE_URL` to any backend host (production, staging, etc.) without changing the source code. Make sure the backend is running before starting the frontend; follow the instructions in the backend repository’s README: https://github.com/joaosalazarr/Pague.AI-Backend. The Angular build system will inject any `NG_APP_*` variable into `import.meta.env`, which the application uses to configure the AuthService and Debts page.
 
 ## Development server
 
