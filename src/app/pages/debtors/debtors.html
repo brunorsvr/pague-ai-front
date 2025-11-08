@@ -50,7 +50,7 @@
           </thead>
 
           <tbody class="divide-y divide-slate-800 bg-slate-900/40">
-            @for (r of paged(); track trackByRow) {
+            @for (r of paged(); track trackByRow($index, r)) {
               <tr class="hover:bg-slate-800/40">
                 <td class="px-4 py-3 text-sm">{{ r.id }}</td>
                 <td class="px-4 py-3 text-sm">{{ r.nome }}</td>

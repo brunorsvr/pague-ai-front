@@ -34,7 +34,24 @@
         </nav>
       </div>
 
-      <button class="h-10 w-10 rounded-full bg-slate-800 grid place-items-center">👤</button>
+      <div class="flex items-center gap-3">
+        <div class="text-right leading-tight hidden sm:block">
+          <span class="text-xs text-slate-400 block">Olá,</span>
+          <span class="text-sm font-semibold text-slate-100">
+            {{ userName || 'Usuário' }}
+          </span>
+        </div>
+        <div class="h-10 w-10 rounded-full bg-slate-800 grid place-items-center text-lg" aria-hidden="true">
+          👤
+        </div>
+        <button
+          type="button"
+          (click)="logout()"
+          class="rounded-lg border border-slate-700 bg-slate-900/70 px-4 py-2 text-sm font-semibold text-slate-100 transition hover:border-slate-500 hover:bg-slate-800"
+        >
+          Sair
+        </button>
+      </div>
     </div>
   </div>
 </header>
