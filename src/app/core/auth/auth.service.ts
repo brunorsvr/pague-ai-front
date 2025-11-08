@@ -5,9 +5,13 @@ import { Observable } from 'rxjs';
 
 type LoginPayload = { email: string; password: string };
 type LoginResponse = {
-  acess_token: string;
-  company_id: string | number;
-  user_name: string;
+  acess_token?: string;
+  access_token?: string;
+  company_id?: string | number;
+  companyId?: string | number;
+  user_name?: string;
+  username?: string;
+  name?: string;
   token_type?: unknown;
 };
 
@@ -20,7 +24,6 @@ export class AuthService {
   private readonly baseUrl = 'http://localhost:8000';
 
   login(payload: LoginPayload): Observable<void> {
-    console.log("chegou aqui")
     return this.http.post<LoginResponse>(`${this.baseUrl}/auth/login`, payload).pipe(
       tap(res => this.setSession(res)),
       map(() => void 0)
@@ -62,9 +65,22 @@ export class AuthService {
   }
 
   private setSession(response: LoginResponse): void {
-    this.setToken(response.acess_token);
-    localStorage.setItem(this.companyKey, String(response.company_id));
-    localStorage.setItem(this.userNameKey, response.user_name);
+    const token = response.acess_token ?? response.access_token ?? null;
+    if (token) {
+      this.setToken(token);
+    }
+
+    const payload = token ? this.decodeJwt(token) : null;
+    const company = response.company_id ?? response.companyId ?? payload?.company_id ?? payload?.companyId ?? null;
+    const userName = response.user_name ?? response.username ?? response.name ?? payload?.user_name ?? payload?.username ?? payload?.name ?? null;
+
+    if (company !== null && company !== undefined) {
+      localStorage.setItem(this.companyKey, String(company));
+    }
+
+    if (userName) {
+      localStorage.setItem(this.userNameKey, userName);
+    }
   }
 
   private setToken(token: string): void {

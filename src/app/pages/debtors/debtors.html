@@ -11,10 +11,10 @@
             placeholder="Procurar..."
             [ngModel]="search()"
             (ngModelChange)="search.set($event); go(1)" />
-          <button type="button"
+          <button type="button" (click)="openModal()"
             class="inline-flex items-center gap-3 bg-gradient-to-r from-[#1cb8ff] to-[#1f7fff] rounded-[16px] text-[#061727] font-semibold py-[0.4rem] px-[0.8rem] cursor-pointer shadow-[0_12px_30px_rgba(28,184,255,0.35)] transition-transform transition-shadow duration-200 ease-in-out">
             <img class="max-h-8" src="assets/add.svg" alt="Adicionar" />
-            Adicionar Devedor
+            Adicionar Dívida
           </button>
         </div>
       </div>
@@ -25,8 +25,6 @@
             <tr>
               <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">ID</th>
               <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">Nome</th>
-              <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">Loja</th>
-
               <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">
                 <button class="inline-flex items-center gap-1 hover:text-white"
                         (click)="setSort('data')">
@@ -44,33 +42,46 @@
               </th>
 
               <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">CPF</th>
+              <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">Contato</th>
               <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">Status</th>
               <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">Ações</th>
             </tr>
           </thead>
 
           <tbody class="divide-y divide-slate-800 bg-slate-900/40">
-            @for (r of paged(); track trackByRow($index, r)) {
-              <tr class="hover:bg-slate-800/40">
-                <td class="px-4 py-3 text-sm">{{ r.id }}</td>
-                <td class="px-4 py-3 text-sm">{{ r.nome }}</td>
-                <td class="px-4 py-3 text-sm">{{ r.loja }}</td>
-                <td class="px-4 py-3 text-sm">{{ r.data | date:'dd/MM/yyyy' }}</td>
-                <td class="px-4 py-3 text-sm">{{ r.valor | currency:'BRL' }}</td>
-                <td class="px-4 py-3 text-sm">{{ r.cpf }}</td>
-                <td class="px-4 py-3">
-                  <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold" [ngClass]="badgeClass(r.status)">{{ r.status }}</span>
-                </td>
-                <td class="px-4 py-3">
-                  <div class="flex items-center gap-3">
-                    <button class="p-2 rounded bg-rose-600 hover:bg-rose-500">
-                      <img class="max-h-5" src="assets/delete.svg" alt="Excluir">
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            } @empty {
-              <tr><td class="px-4 py-6 text-center text-slate-400" colspan="8">Nenhum registro encontrado</td></tr>
+            @if (isLoading()) {
+              <tr><td class="px-4 py-6 text-center text-slate-400" colspan="8">Carregando dívidas...</td></tr>
+            } @else if (loadError()) {
+              <tr><td class="px-4 py-6 text-center text-rose-400" colspan="8">{{ loadError() }}</td></tr>
+            } @else {
+              @for (r of paged(); track trackByRow($index, r)) {
+                <tr class="hover:bg-slate-800/40">
+                  <td class="px-4 py-3 text-sm">{{ r.id }}</td>
+                  <td class="px-4 py-3 text-sm">{{ r.nome }}</td>
+                  <td class="px-4 py-3 text-sm">{{ r.data | date:'dd/MM/yyyy' }}</td>
+                  <td class="px-4 py-3 text-sm">{{ r.valor | currency:'BRL' }}</td>
+                  <td class="px-4 py-3 text-sm">{{ r.cpf }}</td>
+                  <td class="px-4 py-3 text-sm">{{ r.contato || '—' }}</td>
+                  <td class="px-4 py-3">
+                    <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold" [ngClass]="badgeClass(r.status)">{{ r.status }}</span>
+                  </td>
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      <a class="p-2 rounded bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                         [href]="buildWhatsappMessage(r)" target="_blank" rel="noopener"
+                         [class.pointer-events-none]="!r.contato">
+                        <img class="max-h-5" src="assets/whatsapp.svg" alt="Cobrar no WhatsApp">
+                      </a>
+                      <button class="p-2 rounded bg-rose-600 hover:bg-rose-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                              (click)="confirmDelete(r)" [disabled]="deletingId()===r.id">
+                        <img class="max-h-5" src="assets/delete.svg" alt="Excluir">
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              } @empty {
+                <tr><td class="px-4 py-6 text-center text-slate-400" colspan="8">Nenhum registro encontrado</td></tr>
+              }
             }
           </tbody>
         </table>
@@ -96,6 +107,97 @@
                   (click)="go(page()+1)" [disabled]="page()===totalPages()">Próxima</button>
         </div>
       </div>
+
+      @if (showModal()) {
+        <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 px-4">
+          <div class="w-full max-w-lg rounded-xl bg-slate-900 p-6 shadow-xl border border-slate-800">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-xl font-semibold text-white">Adicionar nova dívida</h2>
+              <button type="button" class="text-slate-400 hover:text-white" (click)="closeModal()">X</button>
+            </div>
+            <form #debtForm="ngForm" class="space-y-4" (ngSubmit)="saveDebt(debtForm)">
+              <div>
+                <label class="block text-sm font-medium text-slate-300 mb-1" for="nome">Nome</label>
+                <input id="nome" name="nome" required
+                       class="w-full rounded-md bg-slate-800 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                       [(ngModel)]="formModel.nome" />
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-slate-300 mb-1" for="cpf">CPF</label>
+                <input id="cpf" name="cpf" required maxlength="14" inputmode="numeric" autocomplete="off"
+                       class="w-full rounded-md bg-slate-800 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                       [ngClass]="{'border-rose-500 focus:ring-rose-500': isCpfInvalid()}"
+                       [(ngModel)]="formModel.cpf"
+                       (input)="formModel.cpf = formatCpf($any($event.target).value)" />
+                @if (isCpfInvalid()) {
+                  <p class="mt-1 text-xs text-rose-400">Informe um CPF válido.</p>
+                }
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-300 mb-1" for="telefone">Telefone</label>
+                <input id="telefone" name="telefone" required maxlength="15" inputmode="tel" autocomplete="off"
+                       class="w-full rounded-md bg-slate-800 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                       [ngClass]="{'border-rose-500 focus:ring-rose-500': isPhoneInvalid()}"
+                       [(ngModel)]="formModel.telefone"
+                       (input)="formModel.telefone = formatPhone($any($event.target).value)" />
+                @if (isPhoneInvalid()) {
+                  <p class="mt-1 text-xs text-rose-400">Informe um telefone válido (DDD + número).</p>
+                }
+              </div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-300 mb-1" for="valor">Valor da dívida</label>
+                <input id="valor" name="valor" required type="text" inputmode="numeric" autocomplete="off"
+                       class="w-full rounded-md bg-slate-800 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                       [ngClass]="{'border-rose-500 focus:ring-rose-500': isAmountInvalid()}"
+                       [(ngModel)]="formModel.valor"
+                       (input)="formModel.valor = formatCurrency($any($event.target).value)" />
+                @if (isAmountInvalid()) {
+                  <p class="mt-1 text-xs text-rose-400">Informe um valor maior que zero.</p>
+                }
+              </div>
+              @if (saveError()) {
+                <p class="text-sm text-rose-400">{{ saveError() }}</p>
+              }
+              <div class="flex items-center justify-end gap-3 pt-2">
+                <button type="button" class="px-4 py-2 rounded-md border border-slate-700 text-slate-300 hover:bg-slate-800"
+                        (click)="closeModal()" [disabled]="isSaving()">Cancelar</button>
+                <button type="submit" class="px-4 py-2 rounded-md bg-sky-600 text-white hover:bg-sky-500 disabled:opacity-50"
+                        [disabled]="isSaving()">
+                  {{ isSaving() ? 'Enviando...' : 'Adicionar' }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      }
+
+      @if (confirmModal()) {
+        <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 px-4">
+          <div class="w-full max-w-md rounded-xl bg-slate-900 p-6 shadow-xl border border-slate-800 space-y-4">
+            <h3 class="text-lg font-semibold text-white">Remover dívida</h3>
+            <p class="text-sm text-slate-300">Tem certeza que deseja remover a dívida de <strong>{{ confirmModal()?.nome }}</strong>?</p>
+            <div class="flex justify-end gap-3">
+              <button class="px-4 py-2 rounded-md border border-slate-700 text-slate-300 hover:bg-slate-800"
+                      (click)="cancelDelete()" [disabled]="!!deletingId()">Cancelar</button>
+              <button class="px-4 py-2 rounded-md bg-rose-600 text-white hover:bg-rose-500 disabled:opacity-50"
+                      (click)="deleteDebt(confirmModal()?.id!)" [disabled]="!!deletingId()">
+                {{ deletingId() ? 'Removendo...' : 'Remover' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (toast()) {
+        <div class="fixed bottom-6 right-6 z-50">
+          <div class="rounded-lg px-4 py-3 shadow-xl text-white"
+               [ngClass]="toast()?.type === 'success' ? 'bg-emerald-600/95' : 'bg-rose-600/95'">
+            {{ toast()?.message }}
+          </div>
+        </div>
+      }
 
     </div>
   </main>
