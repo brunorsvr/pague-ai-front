@@ -4,6 +4,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Navbar } from '../../shared/navbar/navbar';
 import { AuthService } from '../../core/auth/auth.service';
+import { environment } from '../../core/config/environment';
 
 type Status = 'Pago' | 'Pendente' | 'Não Pago';
 type SortKey = 'valor' | 'data';
@@ -62,7 +63,9 @@ export class DebtorsComponent implements OnInit, OnDestroy {
 
   private readonly http = inject(HttpClient);
   private readonly auth = inject(AuthService);
-  private readonly debtsBaseUrl = 'http://localhost:8000/debts';
+  private readonly apiBaseUrl = environment.apiBaseUrl;
+  private readonly debtsEndpoint = environment.debtsEndpoint;
+  private readonly debtsBaseUrl = `${this.apiBaseUrl}${this.debtsEndpoint}`;
   private readonly debtsRegisterUrl = `${this.debtsBaseUrl}/register`;
   private toastTimeout: ReturnType<typeof setTimeout> | null = null;
 

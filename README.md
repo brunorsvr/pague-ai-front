@@ -2,6 +2,17 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.6.
 
+## Environment variables
+
+Before running the project, create a `.env` file in the project root (or update the existing one) with the backend endpoints used by the frontend:
+
+```
+NG_APP_API_BASE_URL=http://localhost:8000
+NG_APP_DEBTS_ENDPOINT=/debts
+```
+
+You can point `NG_APP_API_BASE_URL` to any backend host (production, staging, etc.) without changing the source code. The Angular build system will inject any `NG_APP_*` variable into `import.meta.env`, which the application uses to configure the AuthService and Dívidas page.
+
 ## Development server
 
 To start a local development server, run:
